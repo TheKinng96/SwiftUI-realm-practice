@@ -16,16 +16,31 @@ struct ItemDetailsView: View {
       Text("Enter a new name:")
       // Accept a new name
       TextField("New name", text: $item.name)
+        .textFieldStyle(.roundedBorder)
         .navigationBarTitle(item.name)
         .navigationBarItems(trailing: Toggle(isOn: $item.isFavorite) {
           Image(systemName: item.isFavorite ? "heart.fill" : "heart")
         })
+      Button {
+        if let newItem = item.thaw(),
+           let realm = newItem.realm {
+          
+          try? realm.write {
+            realm.delete(newItem)
+          }
+        }
+      } label: {
+        Text("Delete")
+      }
+      
     }.padding()
   }
 }
 
 struct ItemDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    ItemDetailsView(item: Item())
+    NavigationView {
+      ItemDetailsView(item: Item.previewExample())
+    }
   }
 }

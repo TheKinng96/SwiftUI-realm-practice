@@ -37,6 +37,16 @@ final class Item: Object, ObjectKeyIdentifiable {
 
     /// The backlink to the `Group` this item is a part of.
     @Persisted(originProperty: "items") var group: LinkingObjects<Group>
+  
+  convenience init(name: String, isFavorite: Bool) {
+    self.init()
+    self.name = name
+    self.isFavorite = isFavorite
+  }
+  
+  static func previewExample() -> Item {
+    Item(name: "Todo #1", isFavorite: true)
+  }
 }
 
 /// Represents a collection of items.
